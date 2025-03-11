@@ -1,0 +1,61 @@
+﻿@using Bogus
+@page "/tablemake"
+@rendermode InteractiveServer
+
+<h3>TableMake</h3>
+<button class="btn btn-primary" @onclick="Increment">Increment! @counter</button>
+
+<button class="btn btn-primary" @onclick="GenerateData">Generate!</button>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th aria-label="Last Name">Last Name</th>
+        <th aria-label="CacECIPI">CacECIPI</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (users.Count>=0)
+    {
+        @foreach (var user in users)
+        {
+            <tr>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.CacEdipi</td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+
+@code {
+    private List<User> users = new List<User>();
+    private int counter = 10;
+    public void Increment()
+    {
+        counter++;
+        Console.WriteLine("here");
+    }
+    public void GenerateData()
+    {
+        counter++;
+        this.users = new Faker<User>()
+            .RuleFor(x => x.FirstName, f => f.Name.FirstName())
+            .RuleFor(x => x.LastName, f => f.Name.LastName())
+            .RuleFor(x => x.CacEdipi, f => f.Random.Int(0, 99_999_999))
+            .Generate(10);
+
+    }
+
+    private class User
+    {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public int CacEdipi { get; set; }
+    }
+}
